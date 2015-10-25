@@ -1,7 +1,8 @@
 # liquibase-tutorial
 from liquibase-tutorial folder
 
-mvn liquibase:update
+mvn clean liquibase:update
+mvn clean liquibase:clearCheckSums
 
 Goals Available
 
