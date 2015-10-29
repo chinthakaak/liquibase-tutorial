@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:l="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet author="ka40215 (generated)" id="terminalstatus-notification-oracle-0001">
+        <preConditions onFail="CONTINUE">
+            <dbms type="oracle" />
+            <not>
+                <tableExists tableName="TS_NOTIFICATION"/>
+            </not>
+        </preConditions>
+        <comment>Create TS_NOTIFICATION table</comment>
+        <createTable tableName="TS_NOTIFICATION">
+            <column name="APPLICATION_USER_ID" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CORRELATOR" type="VARCHAR2(255 CHAR)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SESSION_ID" type="NUMBER(19,0)">
+                <constraints nullable="false" />
+            </column>
+            <column name="ENDPOINT_URI" type="VARCHAR2(255 CHAR)"/>
+            <column name="START_TIME" type="TIMESTAMP(6)" />
+            <column name="DURATION" type="NUMBER(19,0)"/>
+            <column name="NOTIFICATION_COUNT" type="NUMBER(19,0)"/>
+            <column name="ACTIVE_ADDRESS_COUNT" type="NUMBER(19,0)"/>
+            <column name="STATUS" type="NUMBER(19,0)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="VERSION" type="NUMBER(19,0)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="sh40246" id="terminalstatus-notification-oracle-0002">
+        <preConditions onFail="CONTINUE">
+            <dbms type="oracle"/>
+            <tableExists tableName="TS_NOTIFICATION"/>
+            <sqlCheck expectedResult="0">select count (*) from user_constraints where constraint_name='TS_NOTIFICATION_PK'</sqlCheck>
+        </preConditions>
+        <addPrimaryKey columnNames="APPLICATION_USER_ID, CORRELATOR, STATUS"
+                       constraintName="TS_NOTIFICATION_PK"
+                       tableName="TS_NOTIFICATION"/>
+    </changeSet>
+
+    <!-- The tablespace CSWAY_IDX_ASEUSER is created in the create_oracle_users.sh script in the com.aepona.ase.release project. -->
+    <changeSet author="sh40246" id="terminalstatus-notification-oracle-0003">
+        <preConditions onFail="CONTINUE">
+            <dbms type="oracle"/>
+            <tableExists tableName="TS_NOTIFICATION"/>
+            <not>
+                <indexExists tableName="TS_NOTIFICATION" indexName="TS_NOTIFICATION_APPUSER_IDX"/>
+            </not>
+            <sqlCheck expectedResult="1">SELECT COUNT(*) FROM USER_TABLESPACES WHERE TABLESPACE_NAME='CSWAY_IDX_ASEUSER';</sqlCheck>
+        </preConditions>
+        <comment>Application Username Index 1</comment>
+        <createIndex tableName="TS_NOTIFICATION" indexName="TS_NOTIFICATION_APPUSER_IDX" tablespace="CSWAY_IDX_ASEUSER" unique="false" >
+            <column name="APPLICATION_USER_ID" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="sh40246" id="terminalstatus-notification-oracle-0004">
+        <preConditions onFail="CONTINUE">
+            <dbms type="oracle"/>
+            <tableExists tableName="TS_NOTIFICATION"/>
+            <not>
+                <indexExists tableName="TS_NOTIFICATION" indexName="TS_NOTIFICATION_CORRELATOR_IDX"/>
+            </not>
+            <sqlCheck expectedResult="1">SELECT COUNT(*) FROM USER_TABLESPACES WHERE TABLESPACE_NAME='CSWAY_IDX_ASEUSER';</sqlCheck>
+        </preConditions>
+        <comment>Correlator Index 2</comment>
+        <createIndex tableName="TS_NOTIFICATION" indexName="TS_NOTIFICATION_CORRELATOR_IDX" tablespace="CSWAY_IDX_ASEUSER" unique="false" >
+            <column name="CORRELATOR" />
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="sh40246" id="terminalstatus-notification-oracle-0005">
+        <preConditions onFail="CONTINUE">
+            <dbms type="oracle"/>
+            <tableExists tableName="TS_NOTIFICATION"/>
+            <not>
+                <indexExists tableName="TS_NOTIFICATION" indexName="TS_NOTIFICATION_SESSION_IDX"/>
+            </not>
+            <sqlCheck expectedResult="1">SELECT COUNT(*) FROM USER_TABLESPACES WHERE TABLESPACE_NAME='CSWAY_IDX_ASEUSER';</sqlCheck>
+        </preConditions>
+        <comment>Session Id index 3</comment>
+        <createIndex tableName="TS_NOTIFICATION" indexName="TS_NOTIFICATION_SESSION_IDX" tablespace="CSWAY_IDX_ASEUSER" unique="false" >
+            <column name="SESSION_ID" />
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>
