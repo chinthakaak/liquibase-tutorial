@@ -1,0 +1,25 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <preConditions>
+        <dbms type="oracle" />
+        <runningAs username="sys"/>
+    </preConditions>
+
+    <changeSet id="1" author="Kushan" runAlways="true" failOnError="false">
+        <sqlFile path="src/main/resources/oracle/ddl/drop-user.sql"/>
+    </changeSet>
+
+    <changeSet id="2" author="Kushan" runAlways="true" failOnError="false">
+        <sqlFile path="src/main/resources/oracle/ddl/drop-tablespaces.sql"/>
+    </changeSet>
+
+    <changeSet id="3" author="Kushan" runAlways="true" failOnError="true">
+        <sqlFile path="src/main/resources/oracle/ddl/create-tablespaces.sql"/>
+    </changeSet>
+
+    <changeSet id="4" author="Kushan" runAlways="true" failOnError="true">
+        <sqlFile path="src/main/resources/oracle/ddl/create-user.sql"/>
+    </changeSet>
+</databaseChangeLog>

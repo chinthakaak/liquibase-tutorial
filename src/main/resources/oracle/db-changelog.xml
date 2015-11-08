@@ -17,4 +17,8 @@
     <changeSet id="4" author="Kushan">
         <modifyDataType tableName="test" columnName="name" newDataType="varchar(5)"/>
     </changeSet>
+
+    <changeSet id="5" author="Kushan">
+        <sql>create user "test1";</sql>
+    </changeSet>
 </databaseChangeLog>

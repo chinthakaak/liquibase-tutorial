@@ -1,0 +1,29 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <preConditions>
+        <dbms type="oracle" />
+        <runningAs username="sys"/>
+    </preConditions>
+
+    <changeSet id="drop-user" author="Kushan" runAlways="true" failOnError="false">
+        <sql>drop user "HBDB2";</sql>
+    </changeSet>
+
+    <changeSet id="drop-tablespace" author="Kushan" runAlways="true" failOnError="false">
+        <sql>drop tablespace tbs including contents and datafiles cascade constraints;
+            drop tablespace tbs_tmp including contents and datafiles cascade constraints;</sql>
+    </changeSet>
+
+    <changeSet id="create-tablespace" author="Kushan" runAlways="true" failOnError="true">
+        <sql>create tablespace tbs  datafile '/data/software/oradata/tbs.dbf' size 50M extent management local autoallocate;
+            create temporary tablespace tbs_tmp tempfile '/data/software/oradata/tbs_tmp.dbf' size 20M reuse extent management local uniform size 16M;</sql>
+    </changeSet>
+
+    <changeSet id="create-user" author="Kushan" runAlways="true" failOnError="true">
+        <sql>create user HBDB2 identified by HBDB2
+            default tablespace "TBS"
+            temporary tablespace "TBS_TMP";</sql>
+    </changeSet>
+</databaseChangeLog>
