@@ -1,7 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-sed -i 's/^database.changelog=.*/database.changelog=target\/classes\/db-changelog-schema.xml/g' src/main/resources/project.properties;
-sed -i 's/^database.username=.*/database.username=sys as sysdba/g' src/main/resources/project.properties;
-sed -i 's/^database.password=.*/database.password=manager/g' src/main/resources/project.properties;
-
-mvn resources:resources liquibase:update
+mvn resources:resources
+cp target/classes/liquibase.schema.properties target/classes/liquibase.properties
+mvn liquibase:clearCheckSums liquibase:update

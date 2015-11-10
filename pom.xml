@@ -16,7 +16,7 @@
     </dependencies>
     <build>
         <filters>
-            <filter>src/main/resources/project.properties</filter>
+            <filter>project.properties</filter>
         </filters>
         <resources>
             <resource>
